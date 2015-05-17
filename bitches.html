@@ -7,6 +7,10 @@ margin:    0px;
 padding:    0px;
 }
 </style>
+
+	<script src="http://js.leapmotion.com/leap-0.6.4.min.js"></script>
+	<script src="js/test.js"></script>
+
 </head>
 <body bgcolor="black">
               <canvas id="myCanvas" width="1280" height="720"></canvas>
@@ -104,10 +108,32 @@ function init() {
 }
 
 function runLoop() {
+if (plane)
+{
+	mouseX[1]=constant[0]*windowWidth;
+	mouseY[1]=constant[1]*windowHeight;
+	if (isTouch)
+	{
+    if (lmousedown[1]==0)
+    {
+		lmousedown[1]=2;
+		}
+		}
+		else
+		lmousedown[1]=0;
+}
     draw();
     update();
     for (a=0;a<mouseX.length;a++)
     {
+		
+		context.beginPath();
+		context.rect(mouseX[a],mouseY[a],10,10);
+		context.fillStyle = 'white';
+		if (lmousedown[a]>0)
+			context.fillStyle = 'green';
+		
+		context.fill(); //background
         mouseXP[a]=mouseX[a];
         mouseYP[a]=mouseY[a];
     }
@@ -358,6 +384,9 @@ function clickButton(func, deck)
             else
                 deck2pause();
 		}*/
+		//soundVolumeUpdate();
+		
+		soundVolume(deck,deckVolume[deck-1]);
 		soundVolumeUpdate();
     }
     else if (func==2)//play pause
@@ -577,24 +606,35 @@ function mouseDown(e) {
 function mouseUp(e) {
     lmousedown[0]=0;
 }
-function keyPress(e) {
-    context.fillStyle = "red";
-    context.fillText(e.keyCode+"",5,5);
-    var shi;
+function keyPress(event) {
+    
+		console.log("0 pressed");
+	// console.log("keypress")
+	if(event.keyCode == 49){
+		console.log("1 pressed");
+		regionTopLeft = position;
+	}
+	else if(event.keyCode == 50){
+		console.log("2 pressed");
+		regionTopRight = position;
+	}
+	else if(event.keyCode == 51){
+		console.log("3 pressed");
+		regionBottomRight = position;
+	}
+	else if(event.keyCode == 52){
+		console.log("4 pressed");
+		regionBottomLeft = position;
+	}
 
-    if (e.keyCode==81)//q
-    {
-        if (downArray[0]==1) {
-            return;
-        }downArray[0]=1;
-        shi=0;
-    }
+	else if(event.keyCode == 68 || event.keyCode == 100)	{
+		plane = getEquationOfPlaneFromPoints(regionTopLeft, regionTopRight, regionBottomLeft);
+		console.log(plane);
+	}
 }
 function keyRelease(e) {
     if (e.keyCode==221)//]
     {
-        downArray[22]=0;
-        shi=22;
     }
 }
 
@@ -706,7 +746,7 @@ function soundVolumeUpdate()
 if (typeof gainNode1 !== 'undefined')
 		gainNode1.gain.value=(-(deckVolume[0])*2+2)*(1-sliders[0].value)-1;
 if (typeof gainNode2 !== 'undefined')
-		gainNode2.gain.value=(-(deckVolume[1])*2+2)*(sliders[0].value)-1;
+		gainNode2.gain.value=(-(deckVolume[1])*2+1)*(sliders[0].value)-1;
 }
 function soundVolume(index, vol)
 {
@@ -717,7 +757,7 @@ try{
 	}
 	else
 	{
-		gainNode2.gain.value=(-(vol)*2+1);
+		gainNode2.gain.value=(-(vol)*2+1)*(sliders[0].value)-1;
 	}
 	}catch(err){}
 }

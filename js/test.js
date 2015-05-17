@@ -156,7 +156,7 @@ var regionTopLeft, regionTopRight, regionBottomRight, regionBottomLeft;
 var position;
 var plane;
 var dist;
-var threshold = 40;
+var threshold = 8;
 var isTouch;
 var planepoint;
 var distFormulaValue;
@@ -169,7 +169,7 @@ Leap.loop(controller, function(frame){
 	if(frame.pointables.length > 0){
 		var pointable = frame.pointables[0];
 		position = pointable.tipPosition;
-		document.getElementById("currentPointable").innerHTML = position;
+		//document.getElementById("currentPointable").innerHTML = position;
 	}
 	
 	if(plane){
@@ -185,28 +185,21 @@ Leap.loop(controller, function(frame){
 		v_vector = getVectorFromPoints(regionTopLeft, regionBottomLeft);
 
 		dist = getDistanceFromPointToPlane(position, plane);
-		document.getElementById("distToPlane").innerHTML = dist;
 
 		if(dist < threshold){
 			isTouch = true;
-			document.getElementById("touch").innerHTML = isTouch;
 		}
 		else{
 			isTouch = false;
-			document.getElementById("touch").innerHTML = isTouch;
 		}
 		planepoint = convert3DPointOntoBox(position);
 
 		distFormulaValue = getDistanceBetweenPoints(position, point_on_plane);
 
-		document.getElementById("distFormula").innerHTML = distFormulaValue;
-		document.getElementById("norm").innerHTML = "x: " + plane.normal.i + "<br>y: " + plane.normal.j + "<br>z: " + plane.normal.k;
-		document.getElementById("point").innerHTML = "x: " + point_on_plane[0] + "<br>y: " + point_on_plane[1] + "<br>z: " + point_on_plane[2];
 
 		deltaPoint = [point_on_plane[0] - regionTopLeft[0], point_on_plane[1] - regionTopLeft[1], point_on_plane[2] - regionTopLeft[2]];
 		constant = rref(deltaPoint);
 
-		document.getElementById("constants").innerHTML = "c1: " + constant[0] + "<br>c2: " + constant[1];
 
 	}
 	
@@ -218,22 +211,18 @@ document.onkeypress = function(event) {
 	if(event.keyCode == 49){
 		console.log("1 pressed");
 		regionTopLeft = position;
-		document.getElementById("topLeft").innerHTML = regionTopLeft;
 	}
 	else if(event.keyCode == 50){
 		console.log("2 pressed");
 		regionTopRight = position;
-		document.getElementById("topRight").innerHTML = regionTopRight;
 	}
 	else if(event.keyCode == 51){
 		console.log("3 pressed");
 		regionBottomRight = position;
-		document.getElementById("botRight").innerHTML = regionBottomRight;
 	}
 	else if(event.keyCode == 52){
 		console.log("4 pressed");
 		regionBottomLeft = position;
-		document.getElementById("botLeft").innerHTML = regionBottomLeft;
 	}
 
 	else if(event.keyCode == 68 || event.keyCode == 100)	{
