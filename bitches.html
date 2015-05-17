@@ -119,11 +119,11 @@ function update()
     {
         if (!jWheelPaused[a])
         {
+		
             jWheelTime[a]+=jWheelSpeed[a];
             jWheelAngle[a]+=jWheelSpeed[a]*Math.PI/64;
 			if(a==0)
 			{
-			console.log(deck1pos);
 				if (jWheelSpeed[a]>=0)
 				{
 					if (!deck1splaying)
@@ -151,7 +151,7 @@ function update()
 					deck2play();
 					if (deck2sbackplaying)
 					deck2pauseback();
-					deck2pos += deck2source.playbackRate.value * (aContext.currentTime - deck1last)
+					deck2pos += deck2source.playbackRate.value * (aContext.currentTime - deck2last)
 					deck2last = aContext.currentTime
 				}
 				else
@@ -160,7 +160,7 @@ function update()
 					deck2pause();
 					if (!deck2sbackplaying)
 					deck2playback();
-					deck2pos -= deck2backsource.playbackRate.value * (aContext.currentTime - deck1last)
+					deck2pos -= deck2backsource.playbackRate.value * (aContext.currentTime - deck2last)
 					deck2last = aContext.currentTime
 				}
 			}
@@ -170,7 +170,7 @@ function update()
 			if(a==0)
 			{
 					if (deck1splaying)
-					deck1pause();
+						deck1pause();
 					if (deck1sbackplaying)
 						deck1pauseback();
 					}
@@ -381,6 +381,7 @@ function clickSlider(func, deck, value)
     {
         deckVolume[deck-1]=value;
 		soundVolume(deck,value);
+		soundVolumeUpdate();
     }
     else if (func==3)
     {
@@ -713,12 +714,10 @@ try{
 	if (index==1)
 	{
 		gainNode1.gain.value=(-(vol)*2+2)*(1-sliders[0].value)-1;
-		console.log(gainNode1.gain.value+"1");
 	}
 	else
 	{
 		gainNode2.gain.value=(-(vol)*2+1);
-		console.log(gainNode2.gain.value+"2");
 	}
 	}catch(err){}
 }
@@ -776,6 +775,7 @@ deck2splaying=true;
 														  // Create a gain node.
 gainNode2 = aContext.createGain();
 // Connect the source to the gain node.
+gainNode2.gain.value=-1;
 deck2source.connect(gainNode2);
 // Connect the gain node to the destination.
 gainNode2.connect(aContext.destination);
@@ -785,7 +785,7 @@ deck2splaying=false;
     deck2source.stop(0)
 }
 function deck2playback() {
-deck1sbackplaying=false;
+deck2sbackplaying=true;
     console.log(deck2backbuffer.getChannelData(0))
 
     deck2backsource = aContext.createBufferSource()
