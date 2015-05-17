@@ -141,6 +141,8 @@ if (plane)
 
 function update()
 {
+	deck1pos=Math.max(deck1pos,0);
+	deck2pos=Math.max(deck2pos,0);
     for (a=0; a<2; a++)
     {
         if (!jWheelPaused[a])
@@ -203,7 +205,7 @@ function update()
 					else
 			{
 					if (deck2splaying)
-					deck2pause();
+						deck2pause();
 					if (deck2sbackplaying)
 						deck2pauseback();
 					}
@@ -224,6 +226,8 @@ function getDeckColor(d)
 
 function draw()
 {
+
+		soundVolumeUpdate();
     context.beginPath();
     context.rect(0,0,windowWidth,windowHeight);
     context.fillStyle = 'black';
@@ -745,8 +749,12 @@ function soundVolumeUpdate()
 {
 if (typeof gainNode1 !== 'undefined')
 		gainNode1.gain.value=(-(deckVolume[0])*2+2)*(1-sliders[0].value)-1;
+		else
+		console.log('error 1');
 if (typeof gainNode2 !== 'undefined')
-		gainNode2.gain.value=(-(deckVolume[1])*2+1)*(sliders[0].value)-1;
+		gainNode2.gain.value=(-(deckVolume[1])*2+2)*(sliders[0].value)-1;
+		else
+		console.log('error 2');
 }
 function soundVolume(index, vol)
 {
@@ -757,7 +765,7 @@ try{
 	}
 	else
 	{
-		gainNode2.gain.value=(-(vol)*2+1)*(sliders[0].value)-1;
+		gainNode2.gain.value=(-(vol)*2+2)*(sliders[0].value)-1;
 	}
 	}catch(err){}
 }
