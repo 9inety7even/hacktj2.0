@@ -218,9 +218,17 @@ function update()
 function getDeckColor(d)
 {
     if (d==1)
+	{
+	if (typeof deck1buffer !== 'undefined')
         return colorDeck1;
+        return 'black';
+		}
     else if (d==2)
+	{
+	if (typeof deck2buffer !== 'undefined')
         return colorDeck2;
+        return 'black';
+		}
     else return 'gray';
 }
 
@@ -749,12 +757,8 @@ function soundVolumeUpdate()
 {
 if (typeof gainNode1 !== 'undefined')
 		gainNode1.gain.value=(-(deckVolume[0])*2+2)*(1-sliders[0].value)-1;
-		else
-		console.log('error 1');
 if (typeof gainNode2 !== 'undefined')
 		gainNode2.gain.value=(-(deckVolume[1])*2+2)*(sliders[0].value)-1;
-		else
-		console.log('error 2');
 }
 function soundVolume(index, vol)
 {
