@@ -122,21 +122,21 @@ function rref(point){
 	a32 = v_vector.k;
 	a33 = point[2];
 
-	console.log(u_vector);
-	console.log(v_vector);
-	console.log(point);
+	// console.log(u_vector);
+	// console.log(v_vector);
+	// console.log(point);
 
 	// Create matrix A
 	matrixA = [[a11, a12, a13], [a21, a22, a23], [a31, a32, a33]];
-	console.log(matrixA);
+	// console.log(matrixA);
 	matrixA = [[a11 / u_vector.i, a12 /  u_vector.i, a13 / u_vector.i], [a21 / u_vector.j, a22 / u_vector.j, a23 / u_vector.j], [a31 / u_vector.k, a32 / u_vector.k, a33 / u_vector.k]];
-	console.log(matrixA);
+	// console.log(matrixA);
 
 	// Create a pivot in A11
 	matrixA = [matrixA[0], [0, (matrixA[1][1] - matrixA[0][1]), (matrixA[1][2] - matrixA[0][2])], [0, (matrixA[2][1] - matrixA[0][1]), (matrixA[2][2] - matrixA[0][2])]];
-	console.log(matrixA);
+	// console.log(matrixA);
 	matrixA = [matrixA[0], [0, matrixA[1][1] / matrixA[1][1], matrixA[1][2] / matrixA[1][1]]];
-	console.log(matrixA);
+	// console.log(matrixA);
 
 	// Create a pivot in A22
 	matrixA = [[1, 0, matrixA[0][2] - matrixA[0][1] * matrixA[1][2]], matrixA[1]];
